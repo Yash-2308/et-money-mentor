@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ET Money Mentor — Multi‑Agent Crew</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="logo">
+        <div class="logo-mark">ET</div>
+        <div class="logo-text"><span>Money</span> Mentor</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+        <div class="header-badge">MULTI‑AGENT CREW · 6 SPECIALISTS</div>
+        <div class="settings-btn" onclick="showSettingsModal()">⚙️ Gemini AI</div>
+    </div>
+</header>
+
+<div class="app">
+    <nav class="sidebar">
+        <div class="sidebar-section">
+            <div class="sidebar-label">Agents</div>
+            <div class="nav-item active" onclick="switchPanel('home')">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-text"><div class="nav-title">Overview</div><div class="nav-sub">Crew Dashboard</div></div>
+            </div>
+            <div class="nav-item" onclick="switchPanel('crew')">
+                <div class="nav-icon">🤖</div>
+                <div class="nav-text"><div class="nav-title">Crew Leader</div><div class="nav-sub">Goal decomposition</div></div>
+            </div>
+            <div class="nav-item" onclick="switchPanel('tax')">
+                <div class="nav-icon">📋</div>
+                <div class="nav-text"><div class="nav-title">Tax Wizard</div><div class="nav-sub">Regime optimiser</div></div>
+            </div>
+            <div class="nav-item" onclick="switchPanel('fire')">
+                <div class="nav-icon">🔥</div>
+                <div class="nav-text"><div class="nav-title">FIRE Planner</div><div class="nav-sub">Retirement roadmap</div></div>
+            </div>
+            <div class="nav-item" onclick="switchPanel('mf')">
+                <div class="nav-icon">📊</div>
+                <div class="nav-text"><div class="nav-title">MF X-Ray</div><div class="nav-sub">Portfolio analysis</div></div>
+            </div>
+            <div class="nav-item" onclick="switchPanel('risk')">
+                <div class="nav-icon">⚠️</div>
+                <div class="nav-text"><div class="nav-title">Risk Assessor</div><div class="nav-sub">Volatility & concentration</div></div>
+            </div>
+            <div class="nav-item" onclick="switchPanel('rebal')">
+                <div class="nav-icon">🔄</div>
+                <div class="nav-text"><div class="nav-title">Tax‑Aware Rebalancer</div><div class="nav-sub">Switch planner</div></div>
+            </div>
+            <div class="nav-item" onclick="switchPanel('research')">
+                <div class="nav-icon">🔍</div>
+                <div class="nav-text"><div class="nav-title">Research Agent</div><div class="nav-sub">News sentiment & fund ideas</div></div>
+            </div>
+        </div>
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section">
+            <div class="sidebar-label">Orchestration</div>
+            <div class="toggle-switch">
+                <span>🔴 Simulate API Failure</span>
+                <input type="checkbox" id="simulate-failure-toggle">
+            </div>
+            <button class="btn-secondary full-assessment-btn" onclick="crewLeader.runFullCrew()" id="full-crew-btn">
+                🧠 Run Full Crew (All Agents)
+            </button>
+        </div>
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section">
+            <div class="sidebar-label">System</div>
+            <div class="nav-item">
+                <div class="nav-icon" style="background:var(--green-dim)">⚡</div>
+                <div class="nav-text">
+                    <div class="nav-title" style="color:var(--green)">6 Specialists + Crew Leader</div>
+                    <div class="nav-sub">Orchestration · Retries · Audit</div>
+                </div>
+            </div>
+            <div class="ai-status" id="ai-mode-status">🤖 AI: Smart fallback</div>
+        </div>
+        <div style="padding: 1rem; margin-top: auto;">
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;">
+                <div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);margin-bottom:6px;">Multi‑Agent Crew</div>
+                <div style="font-family:var(--font-head);font-size:11px;color:var(--text2);font-weight:600;">Crew Leader + 6 Specialists</div>
+                <div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);margin-top:2px;">Task decomposition · Inter‑agent handoff</div>
+                <div style="font-family:var(--font-mono);font-size:9px;color:var(--text3);margin-top:8px;">✅ Tax Wizard<br>✅ FIRE Planner<br>✅ MF X‑Ray<br>✅ Risk Assessor<br>✅ Tax‑Aware Rebalancer<br>✅ Research Agent (real RSS news)</div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main">
+        <!-- HOME PANEL -->
+        <div class="panel active" id="panel-home">
+            <div class="hero">
+                <div class="hero-kicker">ET AI Hackathon 2026 · Track 9</div>
+                <h1 class="hero-title">Multi‑Agent <em>Crew</em></h1>
+                <p class="hero-desc">6 specialist agents coordinated by a Crew Leader that understands your goals and orchestrates the right experts to deliver a holistic financial plan.</p>
+            </div>
+            <div class="dash-grid">
+                <div class="dash-card" onclick="switchPanel('crew')"><div class="dash-arrow">↗</div><div class="dash-icon">🤖</div><div class="dash-card-title">Crew Leader</div><div class="dash-card-desc">Describe your goal – the Crew Leader will decompose it and assign the right agents.</div></div>
+                <div class="dash-card" onclick="switchPanel('tax')"><div class="dash-arrow">↗</div><div class="dash-icon">📋</div><div class="dash-card-title">Tax Wizard</div><div class="dash-card-desc">Old vs New regime, missed deductions, investment recommendations.</div></div>
+                <div class="dash-card" onclick="switchPanel('fire')"><div class="dash-arrow">↗</div><div class="dash-icon">🔥</div><div class="dash-card-title">FIRE Planner</div><div class="dash-card-desc">Retirement roadmap, SIP allocations, insurance gap.</div></div>
+                <div class="dash-card" onclick="switchPanel('mf')"><div class="dash-arrow">↗</div><div class="dash-icon">📊</div><div class="dash-card-title">MF X-Ray</div><div class="dash-card-desc">XIRR, overlap, expense ratio drag.</div></div>
+                <div class="dash-card" onclick="switchPanel('risk')"><div class="dash-arrow">↗</div><div class="dash-icon">⚠️</div><div class="dash-card-title">Risk Assessor</div><div class="dash-card-desc">Volatility, concentration risk, diversification suggestions.</div></div>
+                <div class="dash-card" onclick="switchPanel('rebal')"><div class="dash-arrow">↗</div><div class="dash-icon">🔄</div><div class="dash-card-title">Tax‑Aware Rebalancer</div><div class="dash-card-desc">Tax‑efficient switches between funds.</div></div>
+                <div class="dash-card" onclick="switchPanel('research')"><div class="dash-arrow">↗</div><div class="dash-icon">🔍</div><div class="dash-card-title">Research Agent</div><div class="dash-card-desc">Real‑time RSS news, sentiment analysis, fund suggestions.</div></div>
+            </div>
+        </div>
+
+        <!-- CREW LEADER PANEL -->
+        <div class="panel" id="panel-crew">
+            <div class="hero"><div class="hero-kicker">Crew Leader</div><h1 class="hero-title">Your <em>Financial</em> Goal</h1><p class="hero-desc">Describe what you want to achieve and the Crew Leader will orchestrate the right agents.</p></div>
+            <div class="form-section"><div class="field"><label>Your Goal</label><textarea id="crew-goal" rows="3" placeholder="e.g., I want to retire at 55, reduce my tax burden, and understand market sentiment for technology stocks."></textarea></div><div class="cta-row"><button class="btn-primary" onclick="crewLeader.decomposeAndExecute()" id="crew-btn"><span>🤖</span> Run Crew Leader</button><button class="btn-secondary" onclick="loadCrewExample()">Load Example Goal</button></div></div>
+            <div class="section-divider"></div>
+            <div class="results" id="crew-results"><div class="results-empty">Enter a goal to see the crew in action.</div></div>
+        </div>
+
+        <!-- TAX WIZARD PANEL -->
+        <div class="panel" id="panel-tax">
+            <div class="hero"><div class="hero-kicker">Agent 1 of 6 · Tax Wizard</div><h1 class="hero-title">Tax Regime<br><em>Optimiser</em></h1><p class="hero-desc">Fill in your salary structure. The agent calculates exact tax liability under both regimes, finds every missed deduction, and tells you where to invest next.</p></div>
+            <div class="scenario-banner" style="margin-top:1.5rem;">✓ Scenario pack pre-loaded: ₹18L base salary · HRA · 80C · NPS · Home loan — or enter your own figures</div>
+            <div class="form-section">
+                <div class="section-head"><div class="section-num">1</div><div class="section-title">Income Details</div></div>
+                <div class="form-grid">
+                    <div class="field"><label>Basic Salary (Annual)</label><div class="input-wrap"><span class="prefix">₹</span><input type="number" id="t-basic" value="1800000"></div></div>
+                    <div class="field"><label>HRA Component (Annual)</label><div class="input-wrap"><span class="prefix">₹</span><input type="number" id="t-hra" value="360000"></div></div>
+                    <div class="field"><label>Special Allowance (Annual)</label><div class="input-wrap"><span class="prefix">₹</span><input type="number" id="t-special" value="200000"></div></div>
+                    <div class="field"><label>Other Income (Interest, etc.)</label><div class="input-wrap"><span class="prefix">₹</span><input type="number" id="t-other" value="0"></div></div>
+                </div>
+            </div>
+            <div class="section-divider"></div>
+            <div class="form-section">
+                <div class="section-head"><div class="section-num">2</div><div class="section-title">Deductions & Investments</div></div>
+                <div class="form-grid">
+                    <div class="field"><label>80C (ELSS/PPF/LIC/etc.)</label><div class="input-wrap"><span class="prefix">₹</span><input type="number" id="t-80c" value="150000"></div><div class="hint">Max ₹1,50,000</div></div>
+                    <div class="field"><label>NPS Contribution (80CCD(1B))</label><div class="input-wrap"><span class="prefix">₹</span><input type="number" id="t-nps" value="50000"></div><div class="hint">Additional ₹50,000 over 80C</div></div>
+                    <div class="field"><label>Home Loan Interest (24B)</label><div class="input-wrap"><span class="prefix">₹</span><input type="number" id="t-homeloan" value="40000"></div></div>
+                    <div class="field"><label>Health Insurance (80D)</label><div class="input-wrap"><span class="prefix">₹</span><input type="number" id="t-80d" value="25000"></div><div class="hint">Self + parents (senior) up to ₹75,000</div></div>
+                    <div class="field"><label>HRA Rent Paid (Annual)</label><div class="input-wrap"><span class="prefix">₹</span><input type="number" id="t-rent" value="240000"></div></div>
+                    <div class="field"><label>City Type</label><select id="t-city"><option value="metro">Metro</option><option value="nonmetro">Non-Metro</option></select></div>
+                </div>
+            </div>
+            <div class="cta-row"><button class="btn-primary" onclick="crewLeader.runTax()" id="tax-btn"><span>⚡</span> Run Tax Wizard Agent</button><button class="btn-secondary" onclick="loadTaxScenario()">Load Scenario Pack</button></div>
+            <div class="section-divider"></div>
+            <div class="results" id="tax-results"><div class="results-empty">Run the agent to see your regime comparison</div></div>
+        </div>
+
+        <!-- FIRE PLANNER PANEL -->
+        <div class="panel" id="panel-fire">
+            <div class="hero"><div class="hero-kicker">Agent 2 of 6 · FIRE Planner</div><h1 class="hero-title">Retirement<br><em>Roadmap</em></h1><p class="hero-desc">Enter your financial snapshot. The agent builds a month-by-month FIRE plan with SIP allocations, glidepath, and insurance analysis — and updates dynamically.</p></div>
+            <div class="scenario-banner" style="margin-top:1.5rem;">✓ Scenario pack: 34yr software engineer · ₹24L/yr · ₹18L MF · ₹6L PPF · Retire at 50 with ₹1.5L/mo</div>
+            <div class="form-section">
+                <div class="section-head"><div class="section-num">1</div><div class="section-title">Your Profile</div></div>
+                <div class="form-grid">
+                    <div class="field"><label>Current Age</label><input type="number" id="f-age" value="34"></div>
+                    <div class="field"><label>Target Retirement Age</label><input type="number" id="f-retire-age" value="50"></div>
+                    <div class="field"><label>Annual Income</label><div class="input-wrap"><span class="prefix">₹</span><input type="number" id="f-income" value="2400000"></div></div>
+                    <div class="field"><label>Annual Expenses</label><div class="input-wrap"><span class="prefix">₹</span><input type="number" id="f-expenses" value="1200000"></div></div>
+                </div>
+            </div>
+            <div class="section-divider"></div>
+            <div class="form-section">
+                <div class="section-head"><div class="section-num">2</div><div class="section-title">Existing Investments</div></div>
+                <div class="form-grid">
+                    <div class="field"><label>Mutual Funds (Current value)</label><div class="input-wrap"><span class="prefix">₹</span><input type="number" id="f-mf" value="1800000"></div></div>
+                    <div class="field"><label>PPF Balance</label><div class="input-wrap"><span class="prefix">₹</span><input type="number" id="f-ppf" value="600000"></div></div>
+                    <div class="field"><label>EPF Balance</label><div class="input-wrap"><span class="prefix">₹</span><input type="number" id="f-epf" value="500000"></div></div>
+                    <div class="field"><label>Direct Equity / Stocks</label><div class="input-wrap"><span class="prefix">₹</span><input type="number" id="f-equity" value="0"></div></div>
+                </div>
+            </div>
+            <div class="section-divider"></div>
+            <div class="form-section">
+                <div class="section-head"><div class="section-num">3</div><div class="section-title">Retirement Goal</div></div>
+                <div class="form-grid">
+                    <div class="field"><label>Monthly Draw in Retirement (Today's ₹)</label><div class="input-wrap"><span class="prefix">₹</span><input type="number" id="f-monthly-draw" value="150000"></div></div>
+                    <div class="field"><label>Expected Inflation Rate</label><input type="number" id="f-inflation" value="6"></div>
+                    <div class="field"><label>Expected Equity Returns</label><input type="number" id="f-eq-return" value="12"></div>
+                    <div class="field"><label>Expected Debt Returns</label><input type="number" id="f-debt-return" value="7"></div>
+                </div>
+            </div>
+            <div class="cta-row"><button class="btn-primary" onclick="crewLeader.runFIRE()" id="fire-btn"><span>🔥</span> Build FIRE Plan</button><button class="btn-secondary" onclick="loadFIREScenario()">Load Scenario Pack</button></div>
+            <div class="section-divider"></div>
+            <div class="results" id="fire-results"><div class="results-empty">Build your plan to see the retirement roadmap</div></div>
+        </div>
+
+        <!-- MF X-RAY PANEL -->
+        <div class="panel" id="panel-mf">
+            <div class="hero"><div class="hero-kicker">Agent 3 of 6 · MF X-Ray</div><h1 class="hero-title">Portfolio<br><em>Diagnostics</em></h1><p class="hero-desc">Enter your mutual fund holdings. The agent calculates true XIRR, finds stock overlap, expense ratio drag, and builds a tax‑aware rebalancing plan.</p></div>
+            <div class="scenario-banner" style="margin-top:1.5rem;">✓ Scenario pack: 6 funds across 4 AMCs with Reliance/HDFC/Infosys overlap pre‑loaded</div>
+            <div class="form-section"><div class="section-head"><div class="section-num">1</div><div class="section-title">Fund Holdings</div></div><div id="mf-holdings"></div><div style="display: flex; gap: 8px; margin-top: 12px;"><button class="btn-secondary" onclick="openAddFundModal()">+ Add Custom Fund</button><button class="btn-secondary" onclick="loadMFScenario()">Load Scenario Pack</button></div></div>
+            <div class="cta-row"><button class="btn-primary" onclick="crewLeader.runMFXRay()" id="mf-btn">📊 Analyse Portfolio</button></div>
+            <div class="section-divider"></div>
+            <div class="results" id="mf-results"><div class="results-empty">Analyse your portfolio to see the X-Ray report</div></div>
+        </div>
+
+        <!-- RISK ASSESSOR PANEL -->
+        <div class="panel" id="panel-risk">
+            <div class="hero"><div class="hero-kicker">Agent 4 of 6 · Risk Assessor</div><h1 class="hero-title">Portfolio <em>Risk</em> Analysis</h1><p class="hero-desc">Evaluates concentration risk, diversification, and volatility based on your MF holdings.</p></div>
+            <div class="scenario-banner">✓ Uses your MF holdings to evaluate concentration and diversification.</div>
+            <div class="cta-row"><button class="btn-primary" onclick="crewLeader.runRiskAssessor()" id="risk-btn">⚠️ Assess Risk</button></div>
+            <div class="results" id="risk-results"><div class="results-empty">Run Risk Assessor</div></div>
+        </div>
+
+        <!-- TAX-AWARE REBALANCER PANEL -->
+        <div class="panel" id="panel-rebal">
+            <div class="hero"><div class="hero-kicker">Agent 5 of 6 · Tax‑Aware Rebalancer</div><h1 class="hero-title">Tax‑Efficient <em>Switches</em></h1><p class="hero-desc">Recommends fund switches considering STCG/LTCG tax implications.</p></div>
+            <div class="scenario-banner">✓ Recommends fund switches considering STCG/LTCG.</div>
+            <div class="cta-row"><button class="btn-primary" onclick="crewLeader.runRebalancer()" id="rebal-btn">🔄 Generate Switch Plan</button></div>
+            <div class="results" id="rebal-results"><div class="results-empty">Run Rebalancer</div></div>
+        </div>
+
+        <!-- RESEARCH AGENT PANEL with real‑time RSS toggle -->
+        <div class="panel" id="panel-research">
+            <div class="hero"><div class="hero-kicker">Agent 6 of 6 · Research Agent</div><h1 class="hero-title">Market <em>Sentiment</em> & Fund Ideas</h1><p class="hero-desc">Enter a stock or sector to get real‑time news headlines (RSS), sentiment analysis, and fund suggestions.</p></div>
+            <div class="form-section">
+                <div class="field"><label>Stock / Sector</label><input type="text" id="research-topic" placeholder="e.g., Reliance, IT, Banking" value="Reliance"></div>
+                <div class="field" style="margin-top: 1rem;">
+                    <label style="display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox" id="use-realtime-news" checked> Use real‑time news (RSS)
+                    </label>
+                    <div class="hint">Uncheck to use simulated data</div>
+                </div>
+            </div>
+            <div class="cta-row"><button class="btn-primary" onclick="crewLeader.runResearch()" id="research-btn">🔍 Run Research</button><button class="btn-secondary" onclick="loadResearchExample()">Load Example</button></div>
+            <div class="results" id="research-results"><div class="results-empty">Run the Research Agent</div></div>
+        </div>
+    </main>
+</div>
+
+<div id="audit-panel" class="audit-panel">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div class="audit-title">📜 Audit Trail</div>
+        <button class="minimize-btn" onclick="toggleAuditPanel()">−</button>
+    </div>
+    <div class="audit-log-container">
+        <div id="audit-log"></div>
+    </div>
+</div>
+
+<div id="add-fund-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-title">➕ Add Custom Fund</div>
+        <div class="form-grid">
+            <div class="field full"><label>Fund Name</label><input type="text" id="new-fund-name" placeholder="e.g., HDFC Balanced Advantage Fund"></div>
+            <div class="field"><label>Category</label><select id="new-fund-category"><option>Large Cap</option><option>Mid Cap</option><option>Small Cap</option><option>Flexi Cap</option><option>Debt</option></select></div>
+            <div class="field"><label>Invested Amount (₹)</label><input type="number" id="new-fund-invested" value="100000"></div>
+            <div class="field"><label>Current NAV (₹)</label><input type="number" id="new-fund-nav" value="100"></div>
+            <div class="field"><label>Units Held</label><input type="number" id="new-fund-units" value="1000"></div>
+            <div class="field"><label>Purchase Date (YYYY-MM-DD)</label><input type="date" id="new-fund-date" value="2023-01-01"></div>
+            <div class="field"><label>Expense Ratio (%)</label><input type="number" id="new-fund-er" value="0.8" step="0.01"></div>
+            <div class="field full"><label>Top Stocks (comma separated)</label><input type="text" id="new-fund-stocks" placeholder="Reliance, HDFC Bank, Infosys"></div>
+        </div>
+        <div class="modal-buttons" style="margin-top: 1rem;">
+            <button class="btn-secondary" onclick="closeAddFundModal()">Cancel</button>
+            <button class="btn-primary" onclick="addCustomFund()">Add Fund</button>
+        </div>
+    </div>
+</div>
+
+<div id="holdings-quiz-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-title">📊 Mutual Fund Holdings Required</div>
+        <div style="margin-bottom: 1rem;">The Crew Leader needs your mutual fund data to provide a complete analysis. Please choose an option:</div>
+        <div class="modal-buttons" style="justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+            <button class="btn-secondary" onclick="resolveHoldingsQuiz('load')">Load Scenario Pack</button>
+            <button class="btn-primary" onclick="resolveHoldingsQuiz('add')">Add Custom Fund</button>
+            <button class="btn-secondary" onclick="resolveHoldingsQuiz('skip')">Skip (partial analysis)</button>
+        </div>
+    </div>
+</div>
+
+<div id="crew-question-modal" class="modal">
+    <div class="modal-content" style="max-width: 550px;">
+        <div class="modal-title">📋 Please provide the following information</div>
+        <div id="crew-questions-container" style="margin-bottom: 1rem;"></div>
+        <div class="modal-buttons">
+            <button class="btn-secondary" onclick="closeCrewQuestionModal()">Cancel</button>
+            <button class="btn-primary" onclick="submitCrewAnswers()">Submit</button>
+        </div>
+    </div>
+</div>
+
+<div id="settings-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-title">🔑 Google Gemini API Key</div>
+        <div style="font-size:12px; margin-bottom:12px;">Get free key at <a href="https://aistudio.google.com/apikey" target="_blank" style="color:var(--accent)">Google AI Studio</a>.</div>
+        <div style="display:flex; gap:8px; margin-bottom:12px;"><input type="password" id="api-key-input" class="modal-input" placeholder="Paste your API key here" style="flex:1;"><button class="btn-secondary" onclick="testApiKey()">Test Key</button></div>
+        <div id="api-test-result" style="font-size:11px; margin-bottom:12px;"></div>
+        <div class="modal-buttons"><button class="btn-secondary" onclick="closeSettingsModal()">Cancel</button><button class="btn-primary" onclick="saveApiKey()">Save & Enable AI</button></div>
+    </div>
+</div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
