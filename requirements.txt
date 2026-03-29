@@ -1,0 +1,9 @@
+# ET Money Mentor – Requirements
+
+# This is a static web application. No Python packages are required.
+# The project uses only client‑side technologies:
+#   - HTML5, CSS3, JavaScript (ES modules)
+#   - Google Fonts (external CSS)
+#   - Optional: Google Gemini API (free, no client‑side library needed)
+
+# To run, simply serve the folder with a local web server (see README.md).
